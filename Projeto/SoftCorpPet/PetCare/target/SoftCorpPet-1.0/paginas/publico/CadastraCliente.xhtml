@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Cadastro de cliente</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="body">
+                <p:fieldset legend="Cadatro de clientes">
+                    <p:growl id="growl"/>
+                    <h:form id="fomularioCadastroCliente">
+                        <p:wizard flowListener="#{clienteManagedBean.onFlowProcess}">
+                            <p:tab id="conta" title="Conta">
+                                <p:panel header="Conta">
+                                    <h:panelGrid columns="2" cellpadding="5" columnClasses="label, value">
+
+                                        <h:outputLabel for="nome" value="Nome"/>
+                                        <p:inputText id="nome" value="#{clienteManagedBean.cliente.nome}" required="true"/>
+
+                                        <p:outputLabel for="email" value="Email"/>
+                                        <p:inputText id="email" value="#{clienteManagedBean.cliente.email}" required="true" validatorMessage="Formato de email inválido">
+                                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                        </p:inputText>     
+
+                                        <p:outputLabel for="login" value="Login"/>
+                                        <p:inputText id="login" value="#{clienteManagedBean.cliente.login}" required="true"/> 
+
+                                        <p:outputLabel for="senha" value="Senha"/>
+                                        <p:password id="senha" value="#{clienteManagedBean.cliente.senha}" match="senhaConfirm" required="true"/>  
+
+                                        <p:outputLabel for="senhaConfirm" value="Confirmar senha"/>
+                                        <p:password id="senhaConfirm" value="#{clienteManagedBean.cliente.senha}" required="true"/>  
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="personal" title="Endereco">
+                                <p:panel header="Endereco">
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <p:outputLabel for="cep" value="Cep:" />
+                                        <p:inputMask id="cep" value="#{clienteManagedBean.endereco.cep}" mask="99.999-999" required="true"/>
+
+                                        <!--<h:outputLabel/>-->
+                                        <p:commandButton value="Pesquisar" icon="ui-icon-search" action="#{clienteManagedBean.buscaCep()}" update=":fomularioCadastroCliente:dadosEndereco :growl" />
+                                    </h:panelGrid>
+
+                                    <h:panelGrid id="dadosEndereco" columns="2" cellpadding="5">
+
+                                        <p:outputLabel for="bairro" value="Bairro"/>
+                                        <p:inputText id="bairro" value="#{clienteManagedBean.endereco.bairro}" required="false" label="Bairro"/> 
+
+                                        <p:outputLabel for="logradouro" value="Logradouro"/>
+                                        <p:inputText id="logradouro" value="#{clienteManagedBean.endereco.logradouro}" required="false" label="Logradouro"/> 
+
+                                        <p:outputLabel for="complemento" value="Complemento"/>
+                                        <p:inputText id="complemento" value="#{clienteManagedBean.endereco.complemento}" required="false" label="Complemento"/> 
+
+                                        <p:outputLabel for="numero" value="Numero"/>
+                                        <p:inputText id="numero" value="#{clienteManagedBean.endereco.numero}" required="false" label="Numero">
+                                            <f:convertNumber integerOnly="true" />
+                                        </p:inputText> 
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="address" title="Cartão">
+                                <p:panel id="painelEndereco" header="Cartão">
+                                    <h:panelGrid id="painelCartao" columns="2" cellpadding="5">
+                                        <p:outputLabel for="numeroCartao" value="Numero do cartao de crédito:"/>
+                                        <p:inputText id="numeroCartao" value="#{clienteManagedBean.cartao.numero}"/>
+
+                                        <p:outputLabel for="bandeira" value="Bandeira:"/>
+                                        <p:selectOneListbox id="bandeira" value="#{clienteManagedBean.cartao.bandeira}">
+                                            <f:selectItem itemLabel="Master Card" itemValue="Master Card" />
+                                            <f:selectItem itemLabel="Visa" itemValue="Visa" />
+                                            <f:selectItem itemLabel="Elo" itemValue="Elo" />
+                                            <f:selectItem itemLabel="HiperCard" itemValue="HiperCard" />
+                                        </p:selectOneListbox>
+
+                                        <p:outputLabel for="dataValidade" value="Data de validade:"/>
+                                        <p:inputMask id="dataValidade" value="#{clienteManagedBean.cartao.dataValidade}" mask="99/99/9999" >
+                                            <f:convertDateTime type="date" pattern="dd/mm/yyyy" />
+                                        </p:inputMask>
+
+                                        <p:commandButton id="botaoAdicionar" value="Adicionar" update=":growl :fomularioCadastroCliente:painelCartao" action="#{clienteManagedBean.inicializarCartao()}" >
+                                            <p:collector value="#{clienteManagedBean.cartao}" addTo="#{clienteManagedBean.listaCartoes}" unique="true"/>
+                                        </p:commandButton>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="confirm" title="Confirmação">
+                                <p:panel header="Confirmação">
+                                    <h:panelGrid id="confirmation" columns="2" columnClasses="grid,grid">
+                                        <h:panelGrid columns="2" columnClasses="label, value">
+                                            <h:outputText value="Nome: " />
+                                            <h:outputText value="#{clienteManagedBean.cliente.nome}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="Email: " />
+                                            <h:outputText value="#{clienteManagedBean.cliente.email}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="Login: " />
+                                            <h:outputText value="#{clienteManagedBean.cliente.login}" styleClass="outputLabel"/>
+
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="2" columnClasses="label, value">
+                                            <h:outputText value="Bairro: " />
+                                            <h:outputText value="#{clienteManagedBean.endereco.bairro}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="Logradouro: " />
+                                            <h:outputText value="#{clienteManagedBean.endereco.logradouro}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="Cep: " />
+                                            <h:outputText value="#{clienteManagedBean.endereco.cep}" styleClass="outputLabel"/>
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+
+                                    <p:commandButton value="Cadastrar" actionListener="#{clienteManagedBean.salvar()}" update=":growl" process="@this"/>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+
+                    </h:form>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

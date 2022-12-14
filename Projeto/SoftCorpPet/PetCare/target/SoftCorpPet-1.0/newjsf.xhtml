@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="template/template.xhtml">
+            <ui:define name="body">
+
+                <p:growl id="mensagem"/>
+
+                <h:form  id="formListagemConsultas">
+                    <p:panel header="Consultas - Listadas">
+                        <p:dataTable id="tabelaListagemConsultas" emptyMessage="Nenhum registro foi encontrado." paginator="true" value="#{ConsultaGeralManagedBean.listaConsultaGeral}" var="consultas" rows="10">
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Novo" oncomplete="PF('dialogo').show();" actionListener="#{ConsultaGeralManagedBean.constroiConsultaGeral()}" update=":formConsultas:painelConsultas"/>
+                            </f:facet>
+
+                            <p:column headerText="Serviço" sortBy="#{consultas.servico.nome}" filterBy="#{consultas.servico.nome}">
+                                <h:outputText value="#{consultas.servico.nome}"/>
+                            </p:column>
+
+                            <p:column headerText="Data" sortBy="#{consultas.dataMarcada}" >
+                                <h:outputText value="#{consultas.dataMarcada}"/>
+                            </p:column>
+
+                            <p:column headerText="Status" sortBy="#{consultas.status}" >
+                                <h:outputText value="#{consultas.status}"/>
+                            </p:column>
+                            <p:column headerText="Funcionario" sortBy="#{consultas.funcionario.nome}" >
+                                <h:outputText value="#{consultas.funcionario.nome}"/>
+                            </p:column>
+
+                            <p:column headerText="Opções">
+                                <p:commandButton value="Excluir" icon="ui-icon-trash" actionListener="#{ConsultaGeralManagedBean.excluir(evento)}" update=":mensagem :formListagemConsultas:tabelaListagemConsultas">
+                                    <p:confirm header="Confirmação" message="Tem certeza que deseja excluir este serviço?" icon="ui-icon-alert"/>
+                                    <f:attribute name="consultaSelecionada" value="#{consultas}"/>
+                                </p:commandButton>
+
+                                <p:commandButton value="Editar" icon="ui-icon-pencil" actionListener="#{ConsultaGeralManagedBean.editar(evento)}" update=":formConsultas:painelConsultas" oncomplete="PF('dialogo').show();">
+                                    <f:attribute name="consultaSelecionada" value="#{consultas}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="iu-icon-close"/>
+                        </p:confirmDialog>
+
+                    </p:panel>
+                </h:form>
+
+                <p:dialog header="Consulta - Cadastro" widgetVar="dialogo" draggable="false" resizable="false" modal="false" closable="false">
+                    <h:form id="formConsultas">
+
+                        <h:panelGrid id="painelConsultas" columns="2">
+                            <p:outputLabel for="servico" value="Servico:" />
+                            <p:selectOneMenu id="servico" value="#{ConsultaGeralManagedBean.servico}" converter="servicoConverter" >
+                                <f:selectItem itemLabel="Selecione um serviço" itemValue="#{servico}" />
+                                <f:selectItems value="#{ServicoManagedBean.listaServicos}" var="servico" itemValue="#{servico}" itemLabel="#{servico.nome}" />
+                                <f:validateBean disabled="true"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="dataConsulta" value="Data:" />
+                            <p:inputMask id="dataConsulta" value="#{ConsultaGeralManagedBean.consultaGeral.dataMarcada}" mask="99/99/2017" >
+                                <f:convertDateTime type="date" pattern="dd/mm/yyyy" />
+                                <f:validateBean disabled="true"/>
+                            </p:inputMask>
+
+                            <p:outputLabel for="funcionario" value="Funcionario:" />
+                            <p:selectOneMenu id="funcionario" value="#{ConsultaGeralManagedBean.consultaGeral.funcionario}" converter="funcionarioConverter">
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" />
+                                <f:selectItems value="#{FuncionarioManagedBean.listaFuncionarios}" var="funcionario" itemValue="#{funcionario}" itemLabel="#{funcionario.nome}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="status" value="Status:" />
+                            <p:selectOneMenu id="status" value="#{ConsultaGeralManagedBean.statusConsulta}">
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" />
+                                <f:selectItems value="#{ConsultaGeralManagedBean.statusConsultas}" var="status" itemValue="#{status}" itemLabel="#{status}" />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" actionListener="#{ConsultaGeralManagedBean.salvar()}" update=":mensagem :formConsultas:painelConsultas :formListagemConsultas:tabelaListagemConsultas" />
+                            <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

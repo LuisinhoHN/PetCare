@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>saltRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/faces/paginas/publico/login.xhtml</form-login-page>
+            <form-error-page>/faces/paginas/publico/nao_autorizado.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-constraint>
+        <display-name>Páginas Administrativas</display-name>
+        <web-resource-collection>
+            <web-resource-name>Área Protegida</web-resource-name>
+            <description>Área protegida</description>
+            <url-pattern>/faces/paginas/admin/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>DELETE</http-method>            
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>administrador</role-name>
+        </auth-constraint>     
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>   
+    </security-constraint>
+    <security-constraint>
+        <display-name>Páginas Clientes</display-name>
+        <web-resource-collection>
+            <web-resource-name>Área de Clientes</web-resource-name>
+            <description>Área de Clientes</description>
+            <url-pattern>/faces/paginas/usuario/cliente/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>DELETE</http-method>            
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>cliente</role-name>
+        </auth-constraint>  
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>              
+    </security-constraint>  
+    <security-constraint>
+        <display-name>Páginas Usuarios</display-name>
+        <web-resource-collection>
+            <web-resource-name>Área de Funcionario</web-resource-name>
+            <description>Área de Funcionario</description>
+            <url-pattern>/faces/paginas/usuario/funcionario/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>DELETE</http-method>            
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>funcionario</role-name>
+        </auth-constraint>  
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>              
+    </security-constraint>  
+    <security-constraint>
+        <display-name>Páginas Publicas</display-name>
+        <web-resource-collection>
+            <web-resource-name>Área Pública</web-resource-name>
+            <description>Área Pública</description>
+            <url-pattern>/faces/paginas/publico/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>OPTIONS</http-method>
+        </web-resource-collection> 
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>   
+    </security-constraint>     
+    <error-page>
+        <error-code>500</error-code>
+        <location>/faces/paginas/publico/erro.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/faces/paginas/publico/nao_autorizado.xhtml</location>
+    </error-page>    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/faces/paginas/publico/pagina_inexistente.xhtml</location>
+    </error-page> 
+    
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>CAPTCHA_URL</param-name>
+        <param-value>https://www.google.com/recaptcha</param-value>
+    </context-param>    
+    <context-param>
+        <param-name>PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6LcvxScUAAAAAJBcMMo_-4dq5IsBZNx0Rk3WONV3</param-value>
+    </context-param>
+    <context-param>
+        <param-name>PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6LcvxScUAAAAAI-JtaRn4j4fLxaC2L-7JIyTyYvC</param-value>
+    </context-param>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>faces/index.xhtml</welcome-file>
+    </welcome-file-list>
+</web-app>

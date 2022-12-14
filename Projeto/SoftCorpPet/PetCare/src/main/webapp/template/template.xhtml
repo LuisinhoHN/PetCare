@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title><ui:insert name="title">Sistema Pet</ui:insert></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="icon" type="image/x-icon" href="#{resource['images/iconPetShop.jpg']}"/>
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+
+        <script src='https://www.google.com/recaptcha/api.js' />
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="80" header="SistemaPet">
+                <h:form id="menuForm">  
+                    <p:growl id="messages" autoUpdate="true"/>
+
+                    <p:menubar>
+                        
+                        <p:menuitem value="Home" url="index.xhtml" icon="ui-icon-home" />
+                        
+                        <p:submenu label="Geranciar" icon="ui-icon-document" rendered="#{facesContext.externalContext.isUserInRole('administrador')}">
+                            <p:menuitem value="Serviços" url="/faces/paginas/admin/servicos.xhtml" />
+                            <p:menuitem value="Funcionarios" url="/faces/paginas/admin/funcionarios.xhtml" />
+                            <p:menuitem value="Pets" url="/faces/paginas/admin/pet.xhtml" />
+                            <p:menuitem value="Clientes" url="/faces/paginas/admin/cliente.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Consultar" icon="ui-icon-pencil" rendered="#{facesContext.externalContext.isUserInRole('cliente')}">
+                            <p:menuitem value="Pets" url="/faces/paginas/usuario/cliente/CadastraPet.xhtml" />
+                        </p:submenu>
+
+                        <f:facet name="options">
+                            <p:commandButton ajax="false" action="pedidos" value="Meus pedidos" icon="ui-icon-cart"/>
+                            <p:commandButton ajax="false" action="cadastrar" value="Cadastrar" icon="ui-icon-plusthick" rendered="#{empty request.remoteUser}"/>
+                            <p:commandButton ajax="false" action="entrar" value="Entrar" icon="ui-icon-arrowreturnthick-1-e" rendered="#{empty request.remoteUser}"/>
+                            <p:commandButton ajax="false" action="#{managedLogoutBean.logout()}" value="Sair" icon="ui-icon-extlink" rendered="#{not empty request.remoteUser}"/>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="body"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60">
+                <p:panel header="Direitos Reservados"/>
+                <ui:insert name="footer"/>
+            </p:layoutUnit>
+
+
+        </p:layout>
+    </h:body>
+</html>

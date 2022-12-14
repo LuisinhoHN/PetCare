@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+
+        <ui:composition template="../../template/template.xhtml">
+            <ui:define name="body">
+                <h:form id="loginForm">
+                    <p:growl id="growl" life="3500" autoUpdate="true"/>
+
+                    <p:panel id="panel" header="Cadastro de Veterinário">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputLabel for="nome" value="Nome" />
+                            <p:inputText id="nome" value="#{VeterinarioManagedBean.veterinario.nome}" required="true" label="Nome" />
+                            
+                            <h:outputLabel for="email" value="Email" />
+                            <p:inputText id="email" value="#{VeterinarioManagedBean.veterinario.email}" required="true" label="Email" />
+
+                            <h:outputLabel for="login" value="Login" />
+                            <p:inputText id="login" value="#{VeterinarioManagedBean.veterinario.login}" required="true" label="Login" />
+
+                            <h:outputLabel for="crmv" value="Crmv" />
+                            <p:inputText id="crmv" value="#{VeterinarioManagedBean.veterinario.crmv}" required="true" label="Crmv" />
+
+                            <h:outputLabel for="especialidade" value="Especialidade" />
+                            <p:inputText id="especialidade" value="#{VeterinarioManagedBean.veterinario.especialidade}" required="true" label="Especialidade" />
+
+                            <h:outputLabel for="senha" value="Senha" />
+                            <p:password id="senha" value="#{VeterinarioManagedBean.veterinario.senha}" required="true" label="Senha" />
+                            
+                        </h:panelGrid>
+
+                        <p:commandButton value="Cadastrar" ajax="false" title="Cadastrar" action="#{VeterinarioManagedBean.salvar()}" icon="ui-icon-person" immediate="true" update=":growl"/>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+
+    </h:body>
+
+</html>

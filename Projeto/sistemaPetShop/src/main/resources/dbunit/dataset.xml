@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>        
+    <!-- Endereco id = 1 (Nova Morada) --> 
+    <tb_endereco id_endereco="1" str_logradouro="Casa1" int_numero="123" str_complemento="Exemplo endereco 1" str_cep="032146594" str_bairro="Nova Morada"/>
+    <!-- Endereco id = 2 (Aldeia) --> 
+    <tb_endereco id_endereco="2" str_logradouro="Casa2" int_numero="231" str_complemento="Exemplo endereco 2" str_cep="039465948" str_bairro="Aldeia"/>
+    <!-- Endereco id = 3 (Camaragibe) --> 
+    <tb_endereco id_endereco="3" str_logradouro="Casa3" int_numero="312" str_complemento="Exemplo endereco 3" str_cep="032165294" str_bairro="Camaragibe"/>
+    
+    <!-- Usuario id = 1 (cliente) --> 
+    <tb_usuario id_usuario="1" disc_usuario="cli" str_nome="Allan Santos" str_email="AllanSantos@gmail.com" str_login="AllanSantos" str_senha="12345678" fk_endereco="1"/>
+    <tb_cliente id_cliente="1"/>
+    <!-- Usuario id = 2 (funcionario) --> 
+    <tb_usuario id_usuario="2" disc_usuario="fun" str_nome="Luis Henrique" str_email="LuisHenrique@gmail.com" str_login="LuisHenrique" str_senha="12345678" fk_endereco="3"/>
+    <tb_funcionario id_funcionario="2" enum_especialidadeFuncionario="TOSADOR"/>
+    <!-- Usuario id = 3 (veterinario) --> 
+    <tb_usuario id_usuario="3" disc_usuario="vet" str_nome="Jonathan Romualdo" str_email="JonathanRomualdo@gmail.com" str_login="JonathanRomualdo" str_senha="12345678" fk_endereco="2"/>
+    <tb_Veterinario id_veterinario="3" str_crmv="54214554" str_especialidade="Cardiaco"/>
+        
+    <!-- Cartao id = 1 (Elo) --> 
+    <tb_cartao id_cartao="1" str_bandeira="Elo" str_numero="1119293458709222" date_dataValidade="2018-12-15" fk_cliente="1"/>
+    <!-- Cartao id = 2 (Visa) --> 
+    <tb_cartao id_cartao="2" str_bandeira="Visa" str_numero="1648253458709222" date_dataValidade="2019-10-25" fk_cliente="1"/>
+    <!-- Cartao id = 3 (Master) --> 
+    <tb_cartao id_cartao="3" str_bandeira="Master" str_numero="1119293456750468" date_dataValidade="2017-11-25" fk_cliente="1"/>
+    <!-- Cartao id = 4 (Maestro) --> 
+    <tb_cartao id_cartao="4" str_bandeira="Maestro" str_numero="9999293456750468" date_dataValidade="2019-10-22" fk_cliente="1"/>
+    
+    
+    <!-- Servico id = 1 (Tosa) --> 
+    <tb_servico id_servico="1" str_nome="Tosa" dbl_valor="40"/>
+    <!-- Servico id = 2 (Banho) --> 
+    <tb_servico id_servico="2" str_nome="Banho" dbl_valor="50"/>
+    <!-- Servico id = 3 (Banho e Tosa) --> 
+    <tb_servico id_servico="3" str_nome="Banho e Tosa" dbl_valor="90"/>
+    
+    <!-- Pet id = 1 (Cão) --> 
+    <tb_pet id_pet="1" str_nome="Late" flt_peso="45.50" str_raca="Dog Alemão" boo_pedegree="true" fk_cliente="1"/> <!-- fk_consulta_medica="3" -->
+    <!-- Pet id = 2 (Gato) --> 
+    <tb_pet id_pet="2" str_nome="Mia" flt_peso="15.25" str_raca="Gato Persa" boo_pedegree="false" fk_cliente="1"/> <!-- fk_consulta_medica="4" -->
+    
+    <!-- Exame id = 1 (Cardiovascular) --> 
+    <tb_exame id_exame="1" str_nome="Cardiovascular" str_tipo="Cirurgico" str_descricao="Examina o coração" dbl_valor="150"/> <!-- fk_consulta_medica=""-->
+    <!-- Exame id = 2 (Pulmonar) --> 
+    <tb_exame id_exame="2" str_nome="Pulmonar" str_tipo="Cirurgico/Físico" str_descricao="Examina os pulmões externamente e se necessario internamente" dbl_valor="115" /> <!-- fk_consulta_medica=""-->
+    <!-- Exame id = 3 (Geral) --> 
+    <tb_exame id_exame="3" str_nome="Geral" str_tipo="Externo" str_descricao="Examina de forma geral, buscando anomalias" dbl_valor="90"/> <!-- fk_consulta_medica=""-->
+    
+    <!-- Consulta id = 1 (Consulta Geral) --> 
+    <tb_consulta id_consulta="1" disc_consulta="ger" dat_dataMarcada="2017-05-14" str_status="0" />
+    <tb_consulta_geral id_consulta_geral="1" fk_servico="3" fk_funcionario="2"/>
+    <!-- Consulta id = 2 (Consulta Geral) --> 
+    <tb_consulta id_consulta="2" disc_consulta="ger" dat_dataMarcada="2017-04-29" str_status="2" />
+    <tb_consulta_geral id_consulta_geral="2" fk_servico="1" fk_funcionario="2"/>
+    <!-- Consulta id = 3 (Consulta Medica) --> 
+    <tb_consulta id_consulta="3" disc_consulta="med" dat_dataMarcada="2017-03-26" str_status="2" />
+    <tb_consulta_medica id_consulta_medica="3" str_diagnostico="Ta bom agora :V" fk_pet="1" fk_veterinario="3" fk_exame="3"/>
+    <!-- Consulta id = 4 (Consulta Medica) --> 
+    <tb_consulta id_consulta="4" disc_consulta="med" dat_dataMarcada="2017-06-07" str_status="0" />
+    <tb_consulta_medica id_consulta_medica="4" str_diagnostico="Exame não efetuado" fk_pet="2" fk_veterinario="3" fk_exame="1"/>
+
+</dataset>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <p:fieldset legend="Veterinarios" toggleable="true" toggleSpeed="500">
+                    <p:ajax event="toggle" listener="#{fieldsetView.handleToggle}"/>
+                    <h:form>
+                        <p:toolbar>
+                            <p:toolbarGroup>
+                                <p:commandButton value="Ver Veterinarios" action="#" update="@form" ></p:commandButton>
+                            </p:toolbarGroup>                    
+                        </p:toolbar>
+                        <p:dataTable id="valoresListVeteriarios" value="#{VeterinarioManagedBean.listarVeterinarios()}" var="veterinario">
+                            <p:column headerText="nome">
+                                <h:outputText value="#{veterinario.nome}"/>
+                            </p:column>
+                            <p:column headerText="valor">
+                                <h:outputText value="#{veterinario.login}"/>
+                            </p:column>
+                            <p:column headerText="valor">
+                                <h:outputText value="#{veterinario.email}"/>
+                            </p:column>
+                            <p:column headerText="valor">
+                                <h:outputText value="#{veterinario.especialidade}"/>
+                            </p:column>
+                            <p:column headerText="valor">
+                                <h:outputText value="#{veterinario.crmv}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:fieldset>
+                <br/>
+                <br/>
+                <br/>
+                <h:form>
+                    <p:fieldset legend="Adiconar Veterinario">
+                        <p:panelGrid>
+                            <h:outputLabel value="Nome"/>
+                            <p:inputText id="nome" value="#{VeterinarioManagedBean.veterinario.nome}"/>
+                            <br/>
+                            <h:outputLabel value="Login"/>
+                            <p:inputText id="valor" value="#{VeterinarioManagedBean.veterinario.login}"/>     
+                            <br/>
+                            <h:outputLabel value="Email"/>
+                            <p:inputText id="email" value="#{VeterinarioManagedBean.veterinario.email}"/> 
+                            <br/>
+                            <h:outputLabel value="Bairro"/>
+                            <p:inputText id="endereco" value="#{EnderecoManagedBean.endereco.bairro}"/> 
+                            <br/>
+                            <h:outputLabel value="Cep"/>
+                            <p:inputText id="endereco" value="#{EnderecoManagedBean.endereco.cep}"/> 
+                            <br/>
+                            <h:outputLabel value="Complemento"/>
+                            <p:inputText id="endereco" value="#{EnderecoManagedBean.endereco.complemento}"/> 
+                            <br/>
+                            <h:outputLabel value="Logradouro"/>
+                            <p:inputText id="endereco" value="#{EnderecoManagedBean.endereco.logradouro}"/> 
+                            <br/>
+                            <h:outputLabel value="Numero"/>
+                            <p:inputText id="endereco" value="#{EnderecoManagedBean.endereco.numero}"/> 
+                            <br/>
+                            <h:outputLabel value="Usuario"/>
+                            <p:inputText id="endereco" value="#{EnderecoManagedBean.endereco.usuario}"/> 
+                            <br/>
+                            <h:outputLabel value="Senha"/>
+                            <p:password id="senha" value="#{VeterinarioManagedBean.veterinario.senha}"/>  
+                            <br/>
+                            <h:outputLabel value="CRMV"/>
+                            <p:inputText id="crmv" value="#{VeterinarioManagedBean.veterinario.crmv}"/>  
+                            <br/>
+                        </p:panelGrid>
+                        <br/>
+                        <p:commandButton value="Adicionar Veterinario" action="#{VeterinarioManagedBean.adicionar()}" update="@form"></p:commandButton>
+                    </p:fieldset>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

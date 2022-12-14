@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="body">
+
+                <p:growl id="mensagem"/>
+
+                <h:form  id="formListagemFuncionarios">
+                    <p:panel header="Funcionários - Listados">
+                        <p:dataTable id="tabelaListagemFuncionarios" emptyMessage="Nenhum registro foi encontrado." paginator="true" value="#{FuncionarioManagedBean.listaFuncionarios}" var="funcionario" rows="10">
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Novo" onsuccess="PF('dialogo').show();" actionListener="#{FuncionarioManagedBean.constroiFuncionario()}" update=":formFuncionarios:painelFuncionario"/>
+                            </f:facet>
+
+                            <p:column headerText="Nome" sortBy="#{funcionario.nome}" filterBy="#{funcionario.nome}">
+                                <h:outputText value="#{funcionario.nome}"/>
+                            </p:column>
+
+                            <p:column headerText="Especialidade" sortBy="#{funcionario.especialidadeFuncionario}" >
+                                <h:outputText value="#{funcionario.especialidadeFuncionario}"/>
+                            </p:column>
+
+                            <p:column headerText="Opções">
+                                <p:commandButton value="Excluir" icon="ui-icon-trash" actionListener="#{FuncionarioManagedBean.remover}" update=":mensagem :formListagemFuncionarios:tabelaListagemFuncionarios">
+                                    <p:confirm header="Confirmação" message="Tem certeza que deseja excluir este funcionario?" icon="ui-icon-alert"/>
+                                    <f:attribute name="funcionarioSelecionado" value="#{funcionario}"/>
+                                </p:commandButton>
+
+                                <p:commandButton value="Editar" icon="ui-icon-pencil" actionListener="#{ServicoManagedBean.editar}" update=":formListagemFuncionarios:tabelaListagemFuncionarios" oncomplete="PF('dialogo').show();">
+                                    <f:attribute name="funcionarioSelecionado" value="#{funcionario}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="iu-icon-close"/>
+                        </p:confirmDialog>
+
+                    </p:panel>
+                </h:form>
+
+                <p:dialog header="Funcionário - Cadastro" widgetVar="dialogo" draggable="false" resizable="false" modal="false" closable="false">
+                    <h:form id="formFuncionarios">
+
+                        <h:panelGrid id="painelFuncionario" columns="2">
+                            <p:outputLabel value="Nome:" />
+                            <p:inputText maxlength="50" size="30" value="#{FuncionarioManagedBean.usuario.nome}" />
+
+                            <p:outputLabel value="Login:" />
+                            <p:inputText maxlength="50" size="30" value="#{FuncionarioManagedBean.usuario.login}" />
+
+                            <p:outputLabel value="Email:" />
+                            <p:inputText maxlength="50" size="30" value="#{FuncionarioManagedBean.usuario.email}" />
+
+                            <p:outputLabel value="Senha:" />
+                            <p:password maxlength="50" size="30" value="#{FuncionarioManagedBean.usuario.senha}" />
+                        </h:panelGrid>    
+
+                        <h:panelGrid columns="2" cellpadding="5">
+
+                            <p:outputLabel for="cep" value="Cep:" />
+                            <p:inputMask id="cep" value="#{FuncionarioManagedBean.endereco.cep}" mask="99.999-999" required="true"/>
+
+                            <!--<h:outputLabel/>-->
+                            <p:commandButton value="Pesquisar" icon="ui-icon-search" action="#{FuncionarioManagedBean.buscaCep()}" update=":formFuncionarios:dadosEndereco :mensagem" />
+                        </h:panelGrid>
+
+                        <h:panelGrid id="dadosEndereco" columns="2" cellpadding="5">
+
+                            <p:outputLabel for="bairro" value="Bairro"/>
+                            <p:inputText id="bairro" value="#{FuncionarioManagedBean.endereco.bairro}" required="false" label="Bairro"><f:validateBean disabled="true"/></p:inputText> 
+
+                            <p:outputLabel for="logradouro" value="Logradouro"/>
+                            <p:inputText id="logradouro" value="#{FuncionarioManagedBean.endereco.logradouro}" required="false" label="Logradouro"><f:validateBean disabled="true"/></p:inputText> 
+
+                            <p:outputLabel for="complemento" value="Complemento"/>
+                            <p:inputText id="complemento" value="#{FuncionarioManagedBean.endereco.complemento}" required="false" label="Complemento"><f:validateBean disabled="true"/></p:inputText> 
+
+                            <p:outputLabel for="numero" value="Numero"/>
+                            <p:inputText id="numero" value="#{FuncionarioManagedBean.endereco.numero}" required="false" label="Numero" >
+                                <f:convertNumber integerOnly="true" />
+                            </p:inputText> 
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="veterinario" value="É um veterinário?"/>
+                            <p:selectBooleanButton id="veterinario" value="#{FuncionarioManagedBean.value2}" onLabel="Sim" offLabel="Não" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                <f:ajax render="especialidadeFuncionario" listener="#{FuncionarioManagedBean.constroiVeterinario}"/>
+                            </p:selectBooleanButton>
+                        </h:panelGrid>
+
+                        <h:panelGroup id="especialidadeFuncionario">
+                            
+                            <h:panelGrid rendered="#{not FuncionarioManagedBean.value2}" columns="2">
+                                <p:outputLabel value="Especialidade do funcionário:" />
+                                <p:selectOneMenu value="#{FuncionarioManagedBean.especialidadeFuncionario}">
+                                    <f:selectItem itemLabel="Especialidade" value="#{null}"/>
+                                    <f:selectItems value="#{FuncionarioManagedBean.especialidadesFuncionario}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            
+                            <h:panelGrid rendered="#{FuncionarioManagedBean.value2}" columns="2">
+                                <p:outputLabel value="CRMV:" />
+                                <p:inputText value="#{FuncionarioManagedBean.veterinario.crmv}" size="30" label="CRMV"/>
+                                
+                                <p:outputLabel value="Especialidade do veterinário:" />
+                                <p:inputText value="#{FuncionarioManagedBean.veterinario.especialidade}" size="30" label="Especialidade"/>
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" actionListener="#{FuncionarioManagedBean.salvar}" update=":mensagem :formFuncionarios:painelFuncionario :formListagemFuncionarios:tabelaListagemFuncionarios" />
+                            <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

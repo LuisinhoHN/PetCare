@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="sistemapetshopPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.sistema.model.Cartao</class>
+    <class>com.sistema.model.Cliente</class>
+    <class>com.sistema.model.Consulta</class>
+    <class>com.sistema.model.ConsultaGeral</class>
+    <class>com.sistema.model.ConsultaMedica</class>
+    <class>com.sistema.model.Endereco</class>
+    <class>com.sistema.model.Exame</class>
+    <class>com.sistema.model.Funcionario</class>
+    <class>com.sistema.model.Pet</class>
+    <class>com.sistema.model.Servico</class>
+    <class>com.sistema.model.Usuario</class>
+    <class>com.sistema.model.Veterinario</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sistemapet?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
+      <property name="javax.persistence.validation.group.pre-persist" value="javax.validation.groups.Default"/>
+      <!--<property name="eclipselink.application-location" value="C:\Users\Allan Santos\Documents\Repos\projeto-software-corporativo\Projeto\sistemaPetShop\src\main\resources\DDL"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+      <property name="eclipselink.create-ddl-jdbc-file-name" value="create.sql"/>
+      <property name="eclipselink.drop-ddl-jdbc-file-name" value="drop.sql"/>-->
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="body">
+                <h:form id="form">
+                    <p:repeat value="#{ServicoManagedBean.listaServicos}" var="servico" >
+                        <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail" >
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Nome:" />
+                                    <h:outputText value="#{servico.nome}" style="font-weight: bold"/>
+
+                                    <h:outputText value="Valor:" />
+                                    <h:outputText value="#{servico.valor}" style="font-weight: bold"/>
+
+                                    <h:outputText value="Valor:" />
+                                    <h:outputText value="#{servico.valor}" style="font-weight: bold"/>
+                                </h:panelGrid>
+
+                                <p:commandButton value="Contratar"/>
+                            </p:outputPanel>
+                        </h:panelGrid>
+                        <hr />
+                    </p:repeat>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
